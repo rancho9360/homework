@@ -1,0 +1,36 @@
+server:
+  servlet:
+    context-path: /homework  # 业务域/服务  即ddd的 业务域/子域
+
+spring:
+  application:
+    name: homework
+
+  datasource:
+#    url: jdbc:h2:mem:testdb         # 使用内存数据库（应用重启后数据丢失）
+#    driver-class-name: org.h2.Driver
+#    username: sa
+#    password: password
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://172.20.10.12:43306/homework?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=true&serverTimezone=GMT%2B8
+    username: root
+    password: chaos8219
+
+  jackson:
+    date-format: "yyyy-MM-dd HH:mm:ss"
+    time-zone: "Asia/Shanghai"
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true                  # 打印SQL语句（调试用）
+    properties:
+      hibernate:
+        format_sql: true            # 格式化SQL输出
+  h2:
+    console:
+      enabled: true                 # 启用H2控制台
+      path: /h2-console             # H2控制台访问路径\
+
+  main:
+    allow-circular-references: true
