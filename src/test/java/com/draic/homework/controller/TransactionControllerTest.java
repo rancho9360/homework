@@ -20,17 +20,6 @@ public class TransactionControllerTest {
 
   @Test
   void createTest() throws Exception {
-    // 准备数据
-    //		User mockUser = new User(1L, "Alice", 25);
-    //
-    //		TransactionBo.builder().
-    //
-    //		when(transactionService.create(transactionCreateCmd)).thenReturn(mockUser);
-    //
-    //		// 执行HTTP请求
-    //		mockMvc.perform(get("/api/users/{id}", 1L))
-    //				.andExpect(status().isOk())
-    //				.andExpect(jsonPath("$.name").value("Alice"))
-    //				.andExpect(jsonPath("$.age").value(25));
+
   }
 }

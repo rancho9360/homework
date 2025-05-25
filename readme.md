@@ -1,3 +1,16 @@
+# DockerFile构建
+
+```powershell
+# 构建镜像
+docker build -t homework:1.0.0 .
+
+# 启动容器
+docker run -d --name homework-app  -p 8080:8080 homework:1.0.0
+```
+
+
+
+
 # 依赖说明
 
 以下是项目依赖的说明表格：

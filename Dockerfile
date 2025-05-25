@@ -1,37 +1,62 @@
-# 第一阶段：构建应用
-FROM eclipse-temurin:21-jdk AS builder
+# 使用官方JDK 21基础镜像（用于生产环境）
+FROM openjdk:21-ea-jdk-oracle AS base
 
-# 设置工作目录
+# 设置环境变量
+ARG APP_NAME=homework
+ARG APP_VERSION=1.0.0
+ARG MAVEN_CACHE_DIR=/root/.m2
+
+# 创建应用用户和工作目录
+RUN groupadd -r app && useradd -r -g app app
+USER app
 WORKDIR /app
 
-# 复制 Maven 配置文件和源代码
+# ----------------------
+# 阶段 1：构建应用程序
+# ----------------------
+FROM maven:3.9.9-amazoncorretto-21-debian AS build
+
+# 设置相同的环境变量
+ARG APP_NAME=homework
+ARG APP_VERSION=1.0.0
+ARG MAVEN_CACHE_DIR=/root/.m2
+
+# 创建缓存目录（如果不存在）
+RUN mkdir -p ${MAVEN_CACHE_DIR}
+
+# 挂载Maven缓存（加速依赖下载）
+RUN --mount=type=cache,target=${MAVEN_CACHE_DIR} \
+    mkdir -p ${MAVEN_CACHE_DIR} && \
+    echo "Maven cache directory created"
+
+# 复制Maven配置和POM文件
 COPY pom.xml .
+COPY .mvn .mvn
+COPY mvnw .
+# 下载依赖（利用Docker缓存）
+RUN --mount=type=cache,target=${MAVEN_CACHE_DIR} \
+    ./mvnw dependency:go-offline -B
+
+# 复制完整代码并构建
 COPY src ./src
+RUN --mount=type=cache,target=${MAVEN_CACHE_DIR} \
+    ./mvnw package -DskipTests
 
-# 构建应用（跳过测试）
-RUN --mount=type=cache,target=/root/.m2 \
-    ./mvnw clean package -DskipTests
+# ----------------------
+# 阶段 2：生产环境镜像
+# ----------------------
+FROM base AS production
 
-# 提取 JAR 文件
-RUN mkdir -p target/dependency && (cd target/dependency; jar -xf ../*.jar)
+# 复制构建好的JAR包（从build阶段复制）
+COPY --from=build --chown=app:app target/${APP_NAME}-${APP_VERSION}.jar app.jar
 
-# 第二阶段：运行时环境
-FROM eclipse-temurin:21-jre
-
-# 设置时区（可选）
-ENV TZ=Asia/Shanghai
-RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
-
-# 创建应用目录
-WORKDIR /app
-
-# 从构建阶段复制依赖和类文件
-COPY --from=builder /app/target/dependency/BOOT-INF/lib ./lib
-COPY --from=builder /app/target/dependency/META-INF ./META-INF
-COPY --from=builder /app/target/dependency/BOOT-INF/classes ./classes
-
-# 暴露应用端口
+# 暴露端口
 EXPOSE 8080
 
-# 设置启动命令
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-Xmx512m", "-jar", "app.jar"]
+# 优化JVM配置
+ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=256m \
+               -XX:+UseG1GC -XX:MaxGCPauseMillis=200 \
+               -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/app/heapdump.hprof"
+
+# 启动命令
+CMD [ "sh", "-c", "java $JAVA_OPTS -jar /app/app.jar" ]
