@@ -14,7 +14,7 @@ import java.time.Instant;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "user")
+@Table(name = "user0")
 public class User {
 
     @Id
@@ -38,18 +38,18 @@ public class User {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "created_at")
-    private Instant createdAt;
-
-    @Size(max = 255)
-    @Column(name = "created_by")
-    private String createdBy;
-
-    @Column(name = "updated_at")
-    private Long updatedAt;
-
-    @Column(name = "updated_by")
-    private Instant updatedBy;
+//    @Column(name = "created_at")
+//    private Instant createdAt;
+//
+//    @Size(max = 255)
+//    @Column(name = "created_by")
+//    private String createdBy;
+//
+//    @Column(name = "updated_at")
+//    private Long updatedAt;
+//
+//    @Column(name = "updated_by")
+//    private Instant updatedBy;
 
 
 }

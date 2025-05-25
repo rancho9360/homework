@@ -44,15 +44,15 @@ public class Transaction {
   @Column(name = "description")
   private String description;
 
-  @Column(name = "created_at")
-  private Instant createdAt;
-
-  @Column(name = "created_by")
-  private Long createdBy;
-
-  @Column(name = "updated_at")
-  private Instant updatedAt;
-
-  @Column(name = "updated_by")
-  private Long updatedBy;
+//  @Column(name = "created_at")
+//  private Instant createdAt;
+//
+//  @Column(name = "created_by")
+//  private Long createdBy;
+//
+//  @Column(name = "updated_at")
+//  private Instant updatedAt;
+//
+//  @Column(name = "updated_by")
+//  private Long updatedBy;
 }

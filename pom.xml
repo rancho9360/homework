@@ -52,11 +52,11 @@
             <version>9.3.0</version>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.h2database</groupId>-->
-<!--            <artifactId>h2</artifactId>-->
-<!--            <scope>runtime</scope>-->
-<!--        </dependency>-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
 
 
         <dependency>
@@ -108,6 +108,29 @@
 
     </dependencies>
 
+    <profiles>
+        <profile>
+            <id>mysql</id>
+            <properties>
+                <profiles.active>mysql</profiles.active>
+            </properties>
+<!--            <activation>-->
+<!--                &lt;!&ndash; 默认环境 &ndash;&gt;-->
+<!--                <activeByDefault>true</activeByDefault>-->
+<!--            </activation>-->
+        </profile>
+        <profile>
+            <id>h2</id>
+            <properties>
+                <profiles.active>h2</profiles.active>
+            </properties>
+            <activation>
+                <!-- 默认环境 -->
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+
+    </profiles>
     <build>
         <plugins>
 <!--            <plugin>-->

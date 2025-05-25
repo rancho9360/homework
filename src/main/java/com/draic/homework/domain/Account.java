@@ -35,20 +35,20 @@ public class Account {
   @Column(name = "balance", nullable = false, precision = 19, scale = 2)
   private BigDecimal balance;
 
-  @Basic
-  @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
-  @Column(name = "activated")
-  private Boolean activated;
+//  @Basic
+//  @Convert(converter = org.hibernate.type.NumericBooleanConverter.class)
+//  @Column(name = "activated")
+//  private Boolean activated;
 
-  @Column(name = "created_at")
-  private Instant createdAt;
-
-  @Column(name = "created_by")
-  private Long createdBy;
-
-  @Column(name = "updated_at")
-  private Instant updatedAt;
-
-  @Column(name = "updated_by")
-  private Long updatedBy;
+//  @Column(name = "created_at")
+//  private Instant createdAt;
+//
+//  @Column(name = "created_by")
+//  private Long createdBy;
+//
+//  @Column(name = "updated_at")
+//  private Instant updatedAt;
+//
+//  @Column(name = "updated_by")
+//  private Long updatedBy;
 }
