@@ -8,6 +8,9 @@ import com.draic.homework.pojo.command.TransactionUpdateDescriptionCmd;
 import com.draic.homework.pojo.common.ByIdCmd;
 import com.draic.homework.pojo.common.LastIdPageSizeQuery;
 import com.draic.homework.service.TransactionService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -25,6 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/transaction")
+@Tag(name = "transaction", description = "交易")
 public class TransactionController {
 
   private final TransactionService transactionService;
@@ -32,7 +36,8 @@ public class TransactionController {
   /************* 增  *************/
 
   /** 交易新增 */
-  @PostMapping("/create")
+  @Operation(summary = "创建一笔交易", description = "创建一笔交易")
+  @PostMapping({ "/create"})
   public Result<TransactionBo> create(
       @RequestBody @Validated TransactionCreateCmd transactionCreateCmd) throws Exception {
 
@@ -73,8 +78,8 @@ public class TransactionController {
   /************* 查  *************/
 
   @PostMapping("/findAll")
-  public Result<List<TransactionBo>> findAll(@RequestBody @Validated LastIdPageSizeQuery lastIdPageSizeQuery)
-      throws Exception {
+  public Result<List<TransactionBo>> findAll(
+      @RequestBody @Validated LastIdPageSizeQuery lastIdPageSizeQuery) throws Exception {
     List<TransactionBo> transactionBoList = transactionService.findAll(lastIdPageSizeQuery);
     return Result.success("查询成功", transactionBoList);
   }

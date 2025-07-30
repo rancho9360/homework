@@ -16,4 +16,6 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	@Query("SELECT t FROM Transaction t WHERE t.id > :lastId ORDER BY t.id ASC")
 	List<Transaction> findNextPage(@Param("lastId") Long lastId, Pageable pageable);
 
+
+
 }
